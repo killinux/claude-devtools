@@ -28,7 +28,9 @@ export function groupSessionsByDate(sessions: Session[]): DateGroupedSessions {
 
   return sessions.reduce<DateGroupedSessions>(
     (acc, session) => {
-      const sessionDate = new Date(session.createdAt);
+      // Use updatedAt if available, fallback to createdAt
+      const timestamp = session.updatedAt ?? session.createdAt;
+      const sessionDate = new Date(timestamp);
 
       if (isToday(sessionDate)) {
         acc.Today.push(session);

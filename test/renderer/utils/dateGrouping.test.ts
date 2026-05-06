@@ -7,11 +7,11 @@ import {
 import type { Session } from '../../../src/renderer/types/data';
 
 // Helper to create a session with a specific date
-function createSession(id: string, createdAt: Date): Session {
+function createSession(id: string, createdAt: Date, updatedAt?: Date): Session {
   return {
     id,
     createdAt: createdAt.toISOString(),
-    updatedAt: createdAt.toISOString(),
+    updatedAt: (updatedAt ?? createdAt).toISOString(),
     displayName: `Session ${id}`,
     triggerCount: 1,
     ongoing: false,
@@ -118,6 +118,17 @@ describe('dateGrouping', () => {
       const result = groupSessionsByDate(sessions);
 
       expect(result.Today.map((s) => s.id)).toEqual(['first', 'second', 'third']);
+    });
+
+    it('should use updatedAt if available over createdAt', () => {
+      const createdAgo = new Date('2024-01-01T10:00:00Z'); // Older
+      const updatedToday = new Date('2024-01-15T10:00:00Z'); // Today
+      const sessions = [createSession('1', createdAgo, updatedToday)];
+
+      const result = groupSessionsByDate(sessions);
+
+      expect(result.Today).toHaveLength(1);
+      expect(result.Older).toHaveLength(0);
     });
   });
 

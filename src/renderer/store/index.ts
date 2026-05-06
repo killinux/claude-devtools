@@ -249,15 +249,13 @@ export function initializeNotificationListeners(): () => void {
       const isUnknownSessionInSidebar =
         event.sessionId == null ||
         !state.sessions.some((session) => session.id === event.sessionId);
-      const shouldRefreshForPotentialNewSession =
+      const shouldRefreshSidebar =
         isTopLevelSessionEvent &&
         matchesSelectedProject &&
-        isUnknownSessionInSidebar &&
-        (event.type === 'add' || (state.connectionMode === 'local' && event.type === 'change'));
+        (isUnknownSessionInSidebar || event.type === 'change' || event.type === 'add');
 
-      // Refresh sidebar session list only when a truly new top-level session appears.
-      // Local fs.watch can report "change" before/without "add" for newly created files.
-      if (shouldRefreshForPotentialNewSession) {
+      // Refresh sidebar session list when a new session appears or an existing session updates.
+      if (shouldRefreshSidebar) {
         if (matchesSelectedProject && selectedProjectId) {
           scheduleProjectRefresh(selectedProjectId);
         }
