@@ -440,7 +440,11 @@ export async function analyzeSessionFileMetadata(
       gitBranch = entry.gitBranch;
     }
 
-    if (!firstUserMessage && entry.type === 'user') {
+    if (
+      !firstUserMessage &&
+      entry.type === 'user' &&
+      !('isMeta' in entry && entry.isMeta === true)
+    ) {
       const content = entry.message?.content;
       if (typeof content === 'string') {
         if (isCommandOutputContent(content)) {
