@@ -13,7 +13,7 @@ function createSession(id: string, createdAt: Date, updatedAt?: Date): Session {
     projectId: 'test-project',
     projectPath: '/test/project',
     createdAt: createdAt.getTime(),
-    updatedAt: (updatedAt ?? createdAt).getTime(),
+    updatedAt: updatedAt?.getTime(),
     hasSubagents: false,
     messageCount: 5,
   };
