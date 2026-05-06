@@ -12,11 +12,12 @@ import type { DateCategory, DateGroupedSessions } from '../types/tabs';
 
 /**
  * Groups sessions by relative date category.
- * Sessions are categorized based on their createdAt timestamp:
- * - Today: Sessions created today
- * - Yesterday: Sessions created yesterday
- * - Previous 7 Days: Sessions created 2-7 days ago
- * - Older: Sessions created more than 7 days ago
+ * Sessions are categorized based on their most recent timestamp
+ * (max(updatedAt, createdAt), with createdAt fallback):
+ * - Today: Sessions updated/created today
+ * - Yesterday: Sessions updated/created yesterday
+ * - Previous 7 Days: Sessions updated/created 2-7 days ago
+ * - Older: Sessions updated/created more than 7 days ago
  *
  * Within each category, sessions maintain their original sort order.
  *
