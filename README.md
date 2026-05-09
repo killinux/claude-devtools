@@ -14,6 +14,7 @@
 
 
 <p align="center">
+  <a href="https://github.com/matt1398/claude-devtools/stargazers"><img src="https://img.shields.io/github/stars/matt1398/claude-devtools?style=flat-square&color=yellow&label=stars" alt="GitHub stars" /></a>&nbsp;
   <a href="https://claude-dev.tools"><img src="https://img.shields.io/badge/Website-claude--dev.tools-blue?style=flat-square" alt="Website" /></a>&nbsp;
   <a href="https://github.com/matt1398/claude-devtools/releases/latest"><img src="https://img.shields.io/github/v/release/matt1398/claude-devtools?style=flat-square&label=version&color=blue" alt="Latest Release" /></a>&nbsp;
   <a href="https://github.com/matt1398/claude-devtools/releases"><img src="https://img.shields.io/github/downloads/matt1398/claude-devtools/total?style=flat-square&color=green" alt="Downloads" /></a>&nbsp;
@@ -83,6 +84,9 @@ The only workaround is `--verbose`, which dumps raw JSON, internal system prompt
 
 **Zero configuration. No API keys. No wrappers. Works with every session you've ever run.**
 
+> [!TIP]
+> If claude-devtools saves you time debugging Claude Code, **leaving a ⭐ on the repo** is the single best way to support the project — it helps other developers find it.
+
 ---
 
 ## Installation
@@ -107,39 +111,41 @@ brew install --cask claude-devtools
 
 ## Key Features
 
-### Context Reconstruction
+### [Context Reconstruction](https://claude-dev.tools/docs/token-usage)
 
 <img width="100%" alt="context" src="https://github.com/user-attachments/assets/9ff4a5a7-bcf6-47fb-8ca5-d4021540804b" />
 
 Per-turn token attribution across 7 categories — **CLAUDE.md** (global, project, directory), **skills**, **@-mentioned files**, **tool I/O**, **thinking**, **team overhead**, **user text**. See exactly what's in the context window at any point.
 
-### Compaction Visualization
+### [Compaction Visualization](https://claude-dev.tools/docs/compaction)
 
 <video src="https://github.com/user-attachments/assets/25281f09-05ed-4f81-97bc-7b1754b08b06" controls="controls" muted="muted" style="max-width: 100%;"></video>
 
-See the moment your context hits the limit. Visualizes how context fills, compresses, and refills — so you know exactly what was lost.
+See the moment your context hits the limit. Visualizes how context fills, compresses, and refills — so you know exactly what was lost. ([Why did Claude forget? — debugging walkthrough](https://claude-dev.tools/docs/why-claude-forgot))
 
-### Notification Triggers
+### [Notification Triggers](https://claude-dev.tools/docs/notifications)
 
 <video src="https://github.com/user-attachments/assets/3b07b3b4-57af-49ed-9539-be7c56a244f5" controls="controls" muted="muted" style="max-width: 100%;"></video>
 
 System notifications for `.env` access, tool errors, high token usage, and custom regex patterns on any field.
 
-### Tool Call Inspector
+### [Tool Call Inspector](https://claude-dev.tools/docs/tool-calls)
 
 Every tool call expanded with specialized viewers — syntax-highlighted Read calls, inline Edit diffs, Bash output, and full subagent trees.
 
-### Team & Subagent Trees
+### [Team & Subagent Trees](https://claude-dev.tools/docs/subagents)
 
 Isolated execution trees per agent with tool traces, token metrics, duration, and cost. Nested agents render recursively.
 
-### SSH Remote Sessions
+### [SSH Remote Sessions](https://claude-dev.tools/docs/ssh-remote)
 
 Inspect sessions on any remote machine over SSH. Reads `~/.ssh/config`, supports agent forwarding and key auth.
 
 ### Command Palette & Multi-Pane Layout
 
 **Cmd+K** for cross-session search. Open multiple sessions side-by-side with drag-and-drop tabs.
+
+📖 **Full documentation:** [claude-dev.tools/docs](https://claude-dev.tools/docs) · **JSONL format reference:** [claude-dev.tools/docs/jsonl-format](https://claude-dev.tools/docs/jsonl-format) · **`claude --verbose` comparison:** [claude-dev.tools/docs/verbose-vs-devtools](https://claude-dev.tools/docs/verbose-vs-devtools)
 
 ---
 
@@ -203,6 +209,12 @@ pnpm dev
 
 ---
 
+## Community
+
+- **Discussions** — share ideas, ask questions, and read what others are doing in [GitHub Discussions](https://github.com/matt1398/claude-devtools/discussions).
+- **Issues** — bug reports and feature requests in [GitHub Issues](https://github.com/matt1398/claude-devtools/issues).
+- **Changelog** — every release is documented in [CHANGELOG.md](CHANGELOG.md) and on [claude-dev.tools/changelog](https://claude-dev.tools/changelog).
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Please read our [Code of Conduct](CODE_OF_CONDUCT.md).
@@ -214,3 +226,19 @@ IPC handlers validate all inputs with strict path containment checks. File reads
 ## License
 
 [MIT](LICENSE)
+
+---
+
+## Star History
+
+<a href="https://www.star-history.com/#matt1398/claude-devtools&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=matt1398/claude-devtools&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=matt1398/claude-devtools&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=matt1398/claude-devtools&type=Date" />
+  </picture>
+</a>
+
+<p align="center">
+  <sub>Found this useful? <a href="https://github.com/matt1398/claude-devtools">⭐ Star the repo</a> — it&rsquo;s the easiest way to help other developers discover claude-devtools.</sub>
+</p>
