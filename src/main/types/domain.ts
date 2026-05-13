@@ -89,6 +89,8 @@ export interface Session {
   todoData?: unknown;
   /** Unix timestamp when session file was created */
   createdAt: number;
+  /** Unix timestamp of last update/activity */
+  updatedAt?: number;
   /** First user message text (for preview) */
   firstMessage?: string;
   /** Timestamp of first user message (RFC3339) */
