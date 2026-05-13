@@ -185,5 +185,30 @@ export const SESSION_REFRESH = 'session:refresh';
 /** Find a session by its exact UUID across all projects */
 export const FIND_SESSION_BY_ID = 'find-session-by-id';
 
+// =============================================================================
+// Memory API Channels
+// =============================================================================
+
+/** Check whether a project has a memory directory with any .md files */
+export const MEMORY_HAS_MEMORY = 'memory:hasMemory';
+
+/** Read parsed MEMORY.md index + orphan files for a project */
+export const MEMORY_GET_INDEX = 'memory:getIndex';
+
+/** Read a single memory .md file */
+export const MEMORY_READ_FILE = 'memory:readFile';
+
+/** List available external apps for the Open-In menu */
+export const MEMORY_LIST_OPENERS = 'memory:listAvailableOpeners';
+
+/** Open a memory file or directory in an external app */
+export const MEMORY_OPEN_IN = 'memory:openIn';
+
+/** Copy a memory file or directory path to the clipboard */
+export const MEMORY_COPY_PATH = 'memory:copyPath';
+
+/** Memory file change event (main → renderer) */
+export const MEMORY_CHANGED = 'memory:changed';
+
 /** Find sessions whose IDs contain a given hex fragment */
 export const FIND_SESSIONS_BY_PARTIAL_ID = 'find-sessions-by-partial-id';

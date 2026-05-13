@@ -9,6 +9,7 @@ import { createLogger } from '@shared/utils/logger';
 
 import { registerConfigRoutes } from './config';
 import { registerEventRoutes } from './events';
+import { registerMemoryRoutes } from './memory';
 import { registerNotificationRoutes } from './notifications';
 import { registerProjectRoutes } from './projects';
 import { registerSearchRoutes } from './search';
@@ -22,6 +23,7 @@ import { registerValidationRoutes } from './validation';
 import type {
   ChunkBuilder,
   DataCache,
+  MemoryReader,
   ProjectScanner,
   SessionParser,
   SubagentResolver,
@@ -38,6 +40,7 @@ export interface HttpServices {
   subagentResolver: SubagentResolver;
   chunkBuilder: ChunkBuilder;
   dataCache: DataCache;
+  memoryReader: MemoryReader;
   updaterService: UpdaterService;
   sshConnectionManager: SshConnectionManager;
 }
@@ -57,6 +60,7 @@ export function registerHttpRoutes(
   registerUtilityRoutes(app);
   registerSshRoutes(app, services.sshConnectionManager, sshModeSwitchCallback);
   registerUpdaterRoutes(app, services);
+  registerMemoryRoutes(app, services);
   registerEventRoutes(app);
 
   logger.info('All HTTP routes registered');

@@ -21,7 +21,12 @@ import {
   getTodosBasePath,
   setClaudeBasePathOverride,
 } from './utils/pathDecoder';
-import { ConfigManager, LocalFileSystemProvider, NotificationManager, ServiceContext } from './services';
+import {
+  ConfigManager,
+  LocalFileSystemProvider,
+  NotificationManager,
+  ServiceContext,
+} from './services';
 
 import type { HttpServices } from './http';
 import type { SshConnectionManager } from './services/infrastructure/SshConnectionManager';
@@ -97,7 +102,6 @@ async function start(): Promise<void> {
     : undefined;
   await ConfigManager.initializeInstance(configPath);
 
-
   // Apply Claude root override if set
   if (CLAUDE_ROOT) {
     setClaudeBasePathOverride(CLAUDE_ROOT);
@@ -134,6 +138,9 @@ async function start(): Promise<void> {
   localContext.fileWatcher.on('todo-change', (event: unknown) => {
     httpServer.broadcast('todo-change', event);
   });
+  localContext.fileWatcher.on('memory-change', (event: unknown) => {
+    httpServer.broadcast('memory:changed', event);
+  });
 
   // Forward notification events to SSE
   notificationManager.on('notification-new', (notification: unknown) => {
@@ -153,6 +160,7 @@ async function start(): Promise<void> {
     subagentResolver: localContext.subagentResolver,
     chunkBuilder: localContext.chunkBuilder,
     dataCache: localContext.dataCache,
+    memoryReader: localContext.memoryReader,
     updaterService: updaterServiceStub,
     sshConnectionManager: sshConnectionManagerStub,
   };

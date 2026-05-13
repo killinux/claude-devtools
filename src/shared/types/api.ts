@@ -475,6 +475,67 @@ export interface ElectronAPI {
 
   // HTTP Server API
   httpServer: HttpServerAPI;
+
+  // Memory API — per-project Claude memory viewer
+  memory: MemoryAPI;
+}
+
+// =============================================================================
+// Memory API types
+// =============================================================================
+
+export type OpenTargetId =
+  | 'finder'
+  | 'cursor'
+  | 'vscode'
+  | 'zed'
+  | 'android-studio'
+  | 'xcode'
+  | 'ghostty'
+  | 'iterm'
+  | 'terminal'
+  | 'antigravity'
+  | 'copy-path';
+
+export interface OpenTarget {
+  id: OpenTargetId;
+  label: string;
+  iconName: string;
+  shortcutKey?: string;
+  available: boolean;
+}
+
+export interface MemoryEntry {
+  title: string;
+  file: string;
+  hook: string;
+  lineNumber: number;
+}
+
+export interface MemoryIndex {
+  rawMarkdown: string;
+  entries: MemoryEntry[];
+  orphanFiles: string[];
+}
+
+export type MemoryReadFileResult =
+  | { success: true; content: string; path: string }
+  | { success: false; error: string };
+
+export type MemoryOpenResult = { success: true } | { success: false; error: string };
+
+export interface MemoryAPI {
+  hasMemory: (projectId: string) => Promise<boolean>;
+  getIndex: (projectId: string) => Promise<MemoryIndex | null>;
+  readFile: (projectId: string, fileName: string) => Promise<MemoryReadFileResult>;
+  listAvailableOpeners: () => Promise<OpenTarget[]>;
+  openIn: (
+    projectId: string,
+    fileName: string | null,
+    targetId: OpenTargetId
+  ) => Promise<MemoryOpenResult>;
+  copyPath: (projectId: string, fileName: string | null) => Promise<MemoryOpenResult>;
+  onChanged: (callback: (event: { projectId: string }) => void) => () => void;
 }
 
 // =============================================================================

@@ -12,6 +12,13 @@ import {
   HTTP_SERVER_GET_STATUS,
   HTTP_SERVER_START,
   HTTP_SERVER_STOP,
+  MEMORY_CHANGED,
+  MEMORY_COPY_PATH,
+  MEMORY_GET_INDEX,
+  MEMORY_HAS_MEMORY,
+  MEMORY_LIST_OPENERS,
+  MEMORY_OPEN_IN,
+  MEMORY_READ_FILE,
   SESSION_REFRESH,
   SSH_CONNECT,
   SSH_DISCONNECT,
@@ -65,7 +72,12 @@ import type {
   ContextInfo,
   ElectronAPI,
   HttpServerStatus,
+  MemoryIndex,
+  MemoryOpenResult,
+  MemoryReadFileResult,
   NotificationTrigger,
+  OpenTarget,
+  OpenTargetId,
   SessionsByIdsOptions,
   SessionsPaginationOptions,
   SshConfigHostEntry,
@@ -478,6 +490,39 @@ const electronAPI: ElectronAPI = {
     },
     getStatus: async (): Promise<HttpServerStatus> => {
       return invokeIpcWithResult<HttpServerStatus>(HTTP_SERVER_GET_STATUS);
+    },
+  },
+
+  // Memory API
+  memory: {
+    hasMemory: (projectId: string): Promise<boolean> =>
+      ipcRenderer.invoke(MEMORY_HAS_MEMORY, projectId) as Promise<boolean>,
+    getIndex: (projectId: string): Promise<MemoryIndex | null> =>
+      ipcRenderer.invoke(MEMORY_GET_INDEX, projectId) as Promise<MemoryIndex | null>,
+    readFile: (projectId: string, fileName: string): Promise<MemoryReadFileResult> =>
+      ipcRenderer.invoke(MEMORY_READ_FILE, projectId, fileName) as Promise<MemoryReadFileResult>,
+    listAvailableOpeners: (): Promise<OpenTarget[]> =>
+      ipcRenderer.invoke(MEMORY_LIST_OPENERS) as Promise<OpenTarget[]>,
+    openIn: (
+      projectId: string,
+      fileName: string | null,
+      targetId: OpenTargetId
+    ): Promise<MemoryOpenResult> =>
+      ipcRenderer.invoke(
+        MEMORY_OPEN_IN,
+        projectId,
+        fileName,
+        targetId
+      ) as Promise<MemoryOpenResult>,
+    copyPath: (projectId: string, fileName: string | null): Promise<MemoryOpenResult> =>
+      ipcRenderer.invoke(MEMORY_COPY_PATH, projectId, fileName) as Promise<MemoryOpenResult>,
+    onChanged: (callback: (event: { projectId: string }) => void): (() => void) => {
+      const listener = (_e: Electron.IpcRendererEvent, data: { projectId: string }): void =>
+        callback(data);
+      ipcRenderer.on(MEMORY_CHANGED, listener);
+      return (): void => {
+        ipcRenderer.removeListener(MEMORY_CHANGED, listener);
+      };
     },
   },
 };

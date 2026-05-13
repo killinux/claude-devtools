@@ -24,6 +24,7 @@ import {
 } from './context';
 
 const logger = createLogger('IPC:handlers');
+import { initializeMemoryHandlers, registerMemoryHandlers, removeMemoryHandlers } from './memory';
 import { registerNotificationHandlers, removeNotificationHandlers } from './notifications';
 import {
   initializeProjectHandlers,
@@ -79,6 +80,7 @@ export function initializeIpcHandlers(
   initializeUpdaterHandlers(updater);
   initializeSshHandlers(sshManager, registry, contextCallbacks.rewire);
   initializeContextHandlers(registry, contextCallbacks.rewire);
+  initializeMemoryHandlers(registry);
   initializeConfigHandlers({
     onClaudeRootPathUpdated: contextCallbacks.onClaudeRootPathUpdated,
   });
@@ -95,6 +97,7 @@ export function initializeIpcHandlers(
   registerUpdaterHandlers(ipcMain);
   registerSshHandlers(ipcMain);
   registerContextHandlers(ipcMain);
+  registerMemoryHandlers(ipcMain);
   registerWindowHandlers(ipcMain);
 
   logger.info('All handlers registered');
@@ -116,6 +119,7 @@ export function removeIpcHandlers(): void {
   removeUpdaterHandlers(ipcMain);
   removeSshHandlers(ipcMain);
   removeContextHandlers(ipcMain);
+  removeMemoryHandlers(ipcMain);
   removeWindowHandlers(ipcMain);
 
   logger.info('All handlers removed');

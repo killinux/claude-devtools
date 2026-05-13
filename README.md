@@ -81,6 +81,8 @@ The only workaround is `--verbose`, which dumps raw JSON, internal system prompt
 | Collapsed subagent output | Full execution trees per agent with tool traces, tokens, duration, cost |
 | Nothing about thinking | Extended thinking content, fully visible |
 | `--verbose` JSON dump | Structured, filterable, navigable interface — no noise |
+| Per-project Claude memory hidden in `~/.claude/projects/.../memory/` | `MEMORY.md` rendered as a clickable index of layers; open any layer in your editor |
+| Copy from terminal = wrapped lines, ANSI codes, broken Markdown | Real selectable text, one-click copy on every message and code block |
 
 **Zero configuration. No API keys. No wrappers. Works with every session you've ever run.**
 
@@ -117,6 +119,31 @@ brew install --cask claude-devtools
 
 Per-turn token attribution across 7 categories — **CLAUDE.md** (global, project, directory), **skills**, **@-mentioned files**, **tool I/O**, **thinking**, **team overhead**, **user text**. See exactly what's in the context window at any point.
 
+### [Terminal-Friendly Copy & Paste](https://claude-dev.tools/docs/copy-paste)
+
+<video src="https://github.com/user-attachments/assets/976dfc47-4d3c-4539-9be2-218037b3dc37" controls="controls" muted="muted" style="max-width: 100%;"></video>
+
+Copying Claude Code output from the terminal mangles it — selection wraps at the terminal width, ANSI color codes leak into the clipboard, and code blocks lose their Markdown formatting. claude-devtools renders every message, tool call, and output as **real selectable text** with **one-click copy** on every code block, plus full-session **export to Markdown / JSON / plain text**.
+
+### [Project Memory](https://claude-dev.tools/docs/memory)
+
+<img width="100%" alt="Project memory viewer with layer list, frontmatter card, and Open-in launcher" src="public/memory.png" />
+
+Claude Code stores per-project memory at `~/.claude/projects/<project>/memory/` — a `MEMORY.md` index plus one `.md` file per layer (working style, architecture notes, etc.). claude-devtools surfaces this as a sidebar entry that opens a dedicated pane: layer list on the left, full markdown rendering on the right with frontmatter shown as a metadata card, Obsidian-style `[[wikilinks]]` for cross-layer navigation, and an icon-driven "Open in…" launcher that hands any layer (or the whole memory folder) off to Finder/Explorer, Cursor, VS Code, Zed, Xcode, iTerm, Ghostty, Terminal — or copies the absolute path.
+
+### [Team & Subagent Trees](https://claude-dev.tools/docs/subagents)
+
+Isolated execution trees per agent with tool traces, token metrics, duration, and cost. Nested agents render recursively.
+
+### [Tool Call Inspector](https://claude-dev.tools/docs/tool-calls)
+
+Every tool call expanded with specialized viewers — syntax-highlighted Read calls, inline Edit diffs, Bash output, and full subagent trees.
+
+
+### [SSH Remote Sessions](https://claude-dev.tools/docs/ssh-remote)
+
+Inspect sessions on any remote machine over SSH. Reads `~/.ssh/config`, supports agent forwarding and key auth.
+
 ### [Compaction Visualization](https://claude-dev.tools/docs/compaction)
 
 <video src="https://github.com/user-attachments/assets/25281f09-05ed-4f81-97bc-7b1754b08b06" controls="controls" muted="muted" style="max-width: 100%;"></video>
@@ -129,23 +156,12 @@ See the moment your context hits the limit. Visualizes how context fills, compre
 
 System notifications for `.env` access, tool errors, high token usage, and custom regex patterns on any field.
 
-### [Tool Call Inspector](https://claude-dev.tools/docs/tool-calls)
-
-Every tool call expanded with specialized viewers — syntax-highlighted Read calls, inline Edit diffs, Bash output, and full subagent trees.
-
-### [Team & Subagent Trees](https://claude-dev.tools/docs/subagents)
-
-Isolated execution trees per agent with tool traces, token metrics, duration, and cost. Nested agents render recursively.
-
-### [SSH Remote Sessions](https://claude-dev.tools/docs/ssh-remote)
-
-Inspect sessions on any remote machine over SSH. Reads `~/.ssh/config`, supports agent forwarding and key auth.
 
 ### Command Palette & Multi-Pane Layout
 
 **Cmd+K** for cross-session search. Open multiple sessions side-by-side with drag-and-drop tabs.
 
-📖 **Full documentation:** [claude-dev.tools/docs](https://claude-dev.tools/docs) · **JSONL format reference:** [claude-dev.tools/docs/jsonl-format](https://claude-dev.tools/docs/jsonl-format) · **`claude --verbose` comparison:** [claude-dev.tools/docs/verbose-vs-devtools](https://claude-dev.tools/docs/verbose-vs-devtools)
+📖 **Full documentation:** [claude-dev.tools/docs](https://claude-dev.tools/docs) · **Copy from Claude Code:** [claude-dev.tools/docs/copy-paste](https://claude-dev.tools/docs/copy-paste) · **JSONL format reference:** [claude-dev.tools/docs/jsonl-format](https://claude-dev.tools/docs/jsonl-format) · **`claude --verbose` comparison:** [claude-dev.tools/docs/verbose-vs-devtools](https://claude-dev.tools/docs/verbose-vs-devtools)
 
 ---
 

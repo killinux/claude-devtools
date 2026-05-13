@@ -43,7 +43,8 @@ notification_example/
 temp/
 .claude/*.local.json
 .claude/agent-memory/*
-
+.claude/plans/*
+claude-dev.tools/*
 
 eslint-fix/
 remotion/*

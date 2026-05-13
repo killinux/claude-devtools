@@ -16,6 +16,7 @@ import { useStore } from '@renderer/store';
 import { useShallow } from 'zustand/react/shallow';
 
 import { DateGroupedSessions } from '../sidebar/DateGroupedSessions';
+import { MemorySection } from '../sidebar/memory/MemorySection';
 
 import { SidebarHeader } from './SidebarHeader';
 
@@ -100,6 +101,9 @@ export const Sidebar = (): React.JSX.Element | null => {
     >
       {/* Sidebar header with project dropdown */}
       <SidebarHeader />
+
+      {/* Memory section (only shown when the project has a memory dir) */}
+      <MemorySection />
 
       {/* Date-grouped session list */}
       <div className="flex-1 overflow-hidden">

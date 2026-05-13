@@ -20,8 +20,13 @@ import type {
   FindSessionsByPartialIdResult,
   HttpServerAPI,
   HttpServerStatus,
+  MemoryIndex,
+  MemoryOpenResult,
+  MemoryReadFileResult,
   NotificationsAPI,
   NotificationTrigger,
+  OpenTarget,
+  OpenTargetId,
   PaginatedSessionsResult,
   Project,
   RepositoryGroup,
@@ -601,6 +606,42 @@ export class HttpAPIClient implements ElectronAPI {
       this.addEventListener('context:changed', (data: unknown) =>
         callback(null, data as ContextInfo)
       ),
+  };
+
+  // Memory API — standalone mode supports the read paths + copy-path; opener
+  // dispatch is no-op (no display). All endpoints exist on the HTTP server.
+  memory: ElectronAPI['memory'] = {
+    hasMemory: (projectId: string): Promise<boolean> =>
+      this.get<boolean>(`/api/memory/has?projectId=${encodeURIComponent(projectId)}`),
+    getIndex: (projectId: string): Promise<MemoryIndex | null> =>
+      this.get<MemoryIndex | null>(`/api/memory/index?projectId=${encodeURIComponent(projectId)}`),
+    readFile: (projectId: string, fileName: string): Promise<MemoryReadFileResult> =>
+      this.get<MemoryReadFileResult>(
+        `/api/memory/file?projectId=${encodeURIComponent(projectId)}&file=${encodeURIComponent(fileName)}`
+      ),
+    listAvailableOpeners: (): Promise<OpenTarget[]> =>
+      // Standalone server has no display — only copy-path makes sense.
+      Promise.resolve([
+        {
+          id: 'copy-path',
+          label: 'Copy path',
+          iconName: 'clipboard',
+          shortcutKey: '⌘⇧C',
+          available: true,
+        },
+      ]),
+    openIn: (
+      _projectId: string,
+      _fileName: string | null,
+      _targetId: OpenTargetId
+    ): Promise<MemoryOpenResult> =>
+      Promise.resolve({ success: false, error: 'Open-in is unsupported in standalone mode' }),
+    copyPath: (projectId: string, fileName: string | null): Promise<MemoryOpenResult> =>
+      this.post<MemoryOpenResult>('/api/memory/copy-path', { projectId, fileName }),
+    onChanged:
+      (_callback: (event: { projectId: string }) => void): (() => void) =>
+      // No file-watching push from HTTP server in v1 — return a no-op unsubscribe.
+      (): void => {},
   };
 
   // HTTP Server API — in browser mode, server is already running (we're using it)

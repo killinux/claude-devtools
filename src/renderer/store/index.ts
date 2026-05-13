@@ -9,6 +9,7 @@ import { createConfigSlice } from './slices/configSlice';
 import { createConnectionSlice } from './slices/connectionSlice';
 import { createContextSlice } from './slices/contextSlice';
 import { createConversationSlice } from './slices/conversationSlice';
+import { createMemorySlice } from './slices/memorySlice';
 import { createNotificationSlice } from './slices/notificationSlice';
 import { createPaneSlice } from './slices/paneSlice';
 import { createProjectSlice } from './slices/projectSlice';
@@ -45,6 +46,7 @@ export const useStore = create<AppState>()((...args) => ({
   ...createConnectionSlice(...args),
   ...createContextSlice(...args),
   ...createUpdateSlice(...args),
+  ...createMemorySlice(...args),
 }));
 
 // =============================================================================
@@ -370,6 +372,23 @@ export function initializeNotificationListeners(): () => void {
           s.host,
           s.error
         );
+    });
+    if (typeof cleanup === 'function') {
+      cleanupFns.push(cleanup);
+    }
+  }
+
+  // Listen for memory directory changes so the sidebar re-reads MEMORY.md
+  // and any expanded entries when the user edits them externally.
+  if (api.memory?.onChanged) {
+    const cleanup = api.memory.onChanged((data) => {
+      const projectId = data?.projectId;
+      if (!projectId) return;
+      const state = useStore.getState();
+      // Only refresh if the user is actually viewing that project's memory.
+      const baseProjectId = getBaseProjectId(state.selectedProjectId);
+      if (baseProjectId !== projectId) return;
+      void state.refreshMemoryForProject(projectId);
     });
     if (typeof cleanup === 'function') {
       cleanupFns.push(cleanup);

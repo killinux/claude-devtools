@@ -144,6 +144,15 @@ function wireFileWatcherEvents(context: ServiceContext): void {
   context.fileWatcher.on('todo-change', todoChangeHandler);
   todoChangeCleanup = () => context.fileWatcher.off('todo-change', todoChangeHandler);
 
+  // Forward memory-change events to renderer and HTTP SSE
+  const memoryChangeHandler = (event: unknown): void => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('memory:changed', event);
+    }
+    httpServer?.broadcast('memory:changed', event);
+  };
+  context.fileWatcher.on('memory-change', memoryChangeHandler);
+
   logger.info(`FileWatcher events wired for context: ${context.id}`);
 }
 
@@ -366,6 +375,7 @@ async function startHttpServer(
         subagentResolver: activeContext.subagentResolver,
         chunkBuilder: activeContext.chunkBuilder,
         dataCache: activeContext.dataCache,
+        memoryReader: activeContext.memoryReader,
         updaterService,
         sshConnectionManager,
       },

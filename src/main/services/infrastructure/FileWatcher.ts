@@ -489,7 +489,19 @@ export class FileWatcher extends EventEmitter {
    */
   private handleProjectsChange(eventType: string, filename: string): void {
     try {
-      // Ignore non-JSONL files
+      // Memory files: <projectId>/memory/*.md
+      if (filename.endsWith('.md')) {
+        const parts = filename.split(/[\\/]/).filter(Boolean);
+        if (parts.length >= 3 && parts[1] === 'memory') {
+          const projectId = parts[0];
+          this.debounce(`memory:${filename}`, () => {
+            this.emit('memory-change', { projectId });
+          });
+        }
+        return;
+      }
+
+      // Ignore other non-JSONL files
       if (!filename.endsWith('.jsonl')) {
         return;
       }
@@ -869,9 +881,7 @@ export class FileWatcher extends EventEmitter {
       }
 
       if (this.activeSessionFiles.size > 0) {
-        logger.info(
-          `FileWatcher: Seeded ${this.activeSessionFiles.size} active session files`
-        );
+        logger.info(`FileWatcher: Seeded ${this.activeSessionFiles.size} active session files`);
       }
     } catch (err) {
       logger.error('Error seeding active session files:', err);
