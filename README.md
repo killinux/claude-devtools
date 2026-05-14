@@ -52,6 +52,19 @@
 
 ---
 
+## Quick Start
+
+```bash
+git clone https://github.com/matt1398/claude-devtools.git
+cd claude-devtools
+pnpm install
+pnpm dev
+```
+
+> **Prerequisites:** Node.js 20+, pnpm 10+
+
+---
+
 ## The Problem
 
 **Claude Code started hiding what it does.**
