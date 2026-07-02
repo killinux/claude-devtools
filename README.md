@@ -63,6 +63,22 @@ pnpm dev
 
 > **Prerequisites:** Node.js 20+, pnpm 10+
 
+### Run as a web server (access from other machines)
+
+No code changes needed — a built-in standalone mode serves the whole app over HTTP so any machine on your network can open it in a browser.
+
+```bash
+pnpm install
+pnpm standalone:build   # build the renderer + server bundle
+pnpm standalone:start   # serve on 0.0.0.0:3456
+```
+
+Then open `http://<this-machine-ip>:3456` from another machine (on the host itself, `http://localhost:3456`).
+
+- Configure via env vars: `PORT` (default `3456`), `HOST` (default `0.0.0.0`), `CLAUDE_ROOT` (default `~/.claude`), `CORS_ORIGIN` (default `*`).
+- Remember to open the port in your firewall for inbound connections.
+- ⚠️ There is no authentication — it exposes your local Claude Code sessions. Use only on trusted networks.
+
 ---
 
 ## The Problem
