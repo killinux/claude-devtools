@@ -75,6 +75,8 @@ pnpm standalone:start   # serve on 0.0.0.0:3456
 
 Then open `http://<this-machine-ip>:3456` from another machine (on the host itself, `http://localhost:3456`).
 
+On macOS there is also a one-shot helper: `./serve-lan.sh` (builds if needed, starts in the background wrapped in `caffeinate` so the machine does not idle-sleep, prints the LAN URL); `./serve-lan.sh stop` / `./serve-lan.sh rebuild`.
+
 - Configure via env vars: `PORT` (default `3456`), `HOST` (default `0.0.0.0`), `CLAUDE_ROOT` (default `~/.claude`), `CORS_ORIGIN` (default `*`).
 - Remember to open the port in your firewall for inbound connections.
 - ⚠️ There is no authentication — it exposes your local Claude Code sessions. Use only on trusted networks.
